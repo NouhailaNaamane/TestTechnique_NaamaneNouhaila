@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Candidate.Models
+namespace Data.Access.Layer.Models
 {
     public class Candidature
     {
