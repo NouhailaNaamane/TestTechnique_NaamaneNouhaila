@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Access.Layer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230420032810_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20230501003121_first-migration")]
+    partial class firstmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,74 +28,6 @@ namespace Data.Access.Layer.Migrations
             modelBuilder.Entity("Data.Access.Layer.Models.Admin", b =>
                 {
                     b.Property<Guid>("IdAdmin")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdIdentity")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsSuperAdmin")
-                        .HasColumnType("bit");
-
-                    b.HasKey("IdAdmin")
-                        .HasName("pk_admin");
-
-                    b.HasIndex("IdIdentity");
-
-                    b.ToTable("Admins", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Access.Layer.Models.Candidat", b =>
-                {
-                    b.Property<Guid>("IdCandidat")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CvFileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DernierEmployeur")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("IdIdentity")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("NbAnneeExpr")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NiveauEtude")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdCandidat")
-                        .HasName("pk_candidat");
-
-                    b.HasIndex("IdIdentity");
-
-                    b.ToTable("Candidats", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Access.Layer.Models.Candidature", b =>
-                {
-                    b.Property<Guid>("IdOffre")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdCandidat")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCandidature")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("IdOffre", "IdCandidat")
-                        .HasName("pk_candidateur");
-
-                    b.ToTable("Candidatures", (string)null);
-                });
-
-            modelBuilder.Entity("Data.Access.Layer.Models.Identity", b =>
-                {
-                    b.Property<Guid>("IdIdentity")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -117,6 +49,9 @@ namespace Data.Access.Layer.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSuperAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -125,7 +60,8 @@ namespace Data.Access.Layer.Migrations
 
                     b.Property<string>("Nom")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(max)");
@@ -144,7 +80,8 @@ namespace Data.Access.Layer.Migrations
 
                     b.Property<string>("Prenom")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -155,10 +92,54 @@ namespace Data.Access.Layer.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("IdIdentity")
-                        .HasName("pk_identity");
+                    b.HasKey("IdAdmin")
+                        .HasName("pk_admin");
 
-                    b.ToTable("Identities", (string)null);
+                    b.ToTable("Admins", (string)null);
+                });
+
+            modelBuilder.Entity("Data.Access.Layer.Models.Candidature", b =>
+                {
+                    b.Property<Guid>("IdOffre")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("NomCandidat")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PrenomCandidat")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("CvFileName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCandidature")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DernierEmployeur")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailCandidat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NbAnneeExpr")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NiveauEtude")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneCandidat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdOffre", "NomCandidat", "PrenomCandidat")
+                        .HasName("pk_candidateur");
+
+                    b.ToTable("Candidatures", (string)null);
                 });
 
             modelBuilder.Entity("Data.Access.Layer.Models.Offre", b =>
@@ -177,7 +158,8 @@ namespace Data.Access.Layer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -193,7 +175,8 @@ namespace Data.Access.Layer.Migrations
 
                     b.Property<string>("Titre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("IdOffre")
                         .HasName("pk_offre");
@@ -321,47 +304,14 @@ namespace Data.Access.Layer.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Data.Access.Layer.Models.Admin", b =>
-                {
-                    b.HasOne("Data.Access.Layer.Models.Identity", "Identity")
-                        .WithMany("Admins")
-                        .HasForeignKey("IdIdentity")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_admin_identity_id");
-
-                    b.Navigation("Identity");
-                });
-
-            modelBuilder.Entity("Data.Access.Layer.Models.Candidat", b =>
-                {
-                    b.HasOne("Data.Access.Layer.Models.Identity", "Identity")
-                        .WithMany("Candidats")
-                        .HasForeignKey("IdIdentity")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_candidat_identity_id");
-
-                    b.Navigation("Identity");
-                });
-
             modelBuilder.Entity("Data.Access.Layer.Models.Candidature", b =>
                 {
-                    b.HasOne("Data.Access.Layer.Models.Candidat", "Candidat")
-                        .WithMany("Candidatures")
-                        .HasForeignKey("IdOffre")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_candidature_candidat");
-
                     b.HasOne("Data.Access.Layer.Models.Offre", "Offre")
                         .WithMany("Candidatures")
                         .HasForeignKey("IdOffre")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_candidature_offer");
-
-                    b.Navigation("Candidat");
 
                     b.Navigation("Offre");
                 });
@@ -381,18 +331,6 @@ namespace Data.Access.Layer.Migrations
             modelBuilder.Entity("Data.Access.Layer.Models.Admin", b =>
                 {
                     b.Navigation("Offers");
-                });
-
-            modelBuilder.Entity("Data.Access.Layer.Models.Candidat", b =>
-                {
-                    b.Navigation("Candidatures");
-                });
-
-            modelBuilder.Entity("Data.Access.Layer.Models.Identity", b =>
-                {
-                    b.Navigation("Admins");
-
-                    b.Navigation("Candidats");
                 });
 
             modelBuilder.Entity("Data.Access.Layer.Models.Offre", b =>

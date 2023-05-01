@@ -12,7 +12,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"))
 );
 
-builder.Services.AddIdentity<Identity, IdentityRole>()
+builder.Services.AddIdentity<Admin, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddDefaultTokenProviders();
 

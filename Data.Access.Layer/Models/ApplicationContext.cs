@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace Data.Access.Layer.Models
 {
-    public class ApplicationContext : IdentityDbContext<Identity>
+    public class ApplicationContext : IdentityDbContext<Admin>
     {
-        public DbSet<Candidat> Candidats { get; set; }
-        public DbSet<Candidature> Candidatures { get; set; }
         public DbSet<Offre> Offres { get; set; }
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Identity> Identities { get; set; }
+        public DbSet<Candidature> Candidatures { get; set; }
 
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options):base(options)   
@@ -30,14 +28,6 @@ namespace Data.Access.Layer.Models
             modelBuilder.Entity<IdentityUserToken<string>>().HasKey(p => p.UserId);
             modelBuilder.Ignore<IdentityUser<string>>();
 
-            modelBuilder.Entity<Identity>(entity =>
-            {
-                entity.HasKey(e => e.IdIdentity)
-                .HasName("pk_identity");
-
-                entity.ToTable("Identities");
-            });
-
             modelBuilder.Entity<Admin>(entity =>
             {
                 entity.HasKey(e => e.IdAdmin)
@@ -45,31 +35,11 @@ namespace Data.Access.Layer.Models
 
                 entity.ToTable("Admins");
 
-                entity.HasOne(a => a.Identity)
-                .WithMany(p => p.Admins)
-                .HasForeignKey(d => d.IdIdentity)
-                .HasConstraintName("fk_admin_identity_id")
-                .OnDelete(DeleteBehavior.Restrict);
-
                 entity.HasMany(a => a.Offers)
                 .WithOne(a => a.AddedByAdmin)
                 .HasForeignKey(a => a.AddedBy)
                 .HasConstraintName("fk_admin_offers")
                 .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            modelBuilder.Entity<Candidat>(entity =>
-            {
-                entity.HasKey(e => e.IdCandidat)
-                .HasName("pk_candidat");
-
-                entity.ToTable("Candidats");
-
-                entity.HasOne(a => a.Identity)
-                .WithMany(p => p.Candidats)
-                .HasForeignKey(d => d.IdIdentity)
-                .HasConstraintName("fk_candidat_identity_id")
-                 .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Offre>(entity =>
@@ -82,7 +52,7 @@ namespace Data.Access.Layer.Models
 
             modelBuilder.Entity<Candidature>(entity =>
             {
-                entity.HasKey(e => new { e.IdOffre, e.IdCandidat })
+                entity.HasKey(e => new { e.IdOffre, e.NomCandidat, e.PrenomCandidat })
                 .HasName("pk_candidateur");
 
                 entity.ToTable("Candidatures");
@@ -91,12 +61,6 @@ namespace Data.Access.Layer.Models
                 .WithMany(p => p.Candidatures)
                 .HasForeignKey(d => d.IdOffre)
                 .HasConstraintName("fk_candidature_offer")
-                 .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(a => a.Candidat)
-                .WithMany(p => p.Candidatures)
-                .HasForeignKey(d => d.IdOffre)
-                .HasConstraintName("fk_candidature_candidat")
                  .OnDelete(DeleteBehavior.Restrict);
             });
         }

@@ -6,18 +6,19 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Data.Access.Layer.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class firstmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Identities",
+                name: "Admins",
                 columns: table => new
                 {
-                    IdIdentity = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdAdmin = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsSuperAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    Nom = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Prenom = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Id = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -37,7 +38,7 @@ namespace Data.Access.Layer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_identity", x => x.IdIdentity);
+                    table.PrimaryKey("pk_admin", x => x.IdAdmin);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,54 +126,13 @@ namespace Data.Access.Layer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Admins",
-                columns: table => new
-                {
-                    IdAdmin = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsSuperAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    IdIdentity = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_admin", x => x.IdAdmin);
-                    table.ForeignKey(
-                        name: "fk_admin_identity_id",
-                        column: x => x.IdIdentity,
-                        principalTable: "Identities",
-                        principalColumn: "IdIdentity",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Candidats",
-                columns: table => new
-                {
-                    IdCandidat = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdIdentity = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NiveauEtude = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NbAnneeExpr = table.Column<int>(type: "int", nullable: false),
-                    DernierEmployeur = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CvFileName = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_candidat", x => x.IdCandidat);
-                    table.ForeignKey(
-                        name: "fk_candidat_identity_id",
-                        column: x => x.IdIdentity,
-                        principalTable: "Identities",
-                        principalColumn: "IdIdentity",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Offres",
                 columns: table => new
                 {
                     IdOffre = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AddedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Titre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Titre = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     DatePublish = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateFin = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MinSalary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -196,18 +156,19 @@ namespace Data.Access.Layer.Migrations
                 columns: table => new
                 {
                     IdOffre = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdCandidat = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DateCandidature = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    NomCandidat = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    PrenomCandidat = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    DateCandidature = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EmailCandidat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneCandidat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NiveauEtude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NbAnneeExpr = table.Column<int>(type: "int", nullable: false),
+                    DernierEmployeur = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CvFileName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_candidateur", x => new { x.IdOffre, x.IdCandidat });
-                    table.ForeignKey(
-                        name: "fk_candidature_candidat",
-                        column: x => x.IdOffre,
-                        principalTable: "Candidats",
-                        principalColumn: "IdCandidat",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("pk_candidateur", x => new { x.IdOffre, x.NomCandidat, x.PrenomCandidat });
                     table.ForeignKey(
                         name: "fk_candidature_offer",
                         column: x => x.IdOffre,
@@ -215,16 +176,6 @@ namespace Data.Access.Layer.Migrations
                         principalColumn: "IdOffre",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Admins_IdIdentity",
-                table: "Admins",
-                column: "IdIdentity");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Candidats_IdIdentity",
-                table: "Candidats",
-                column: "IdIdentity");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Offres_AddedBy",
@@ -257,16 +208,10 @@ namespace Data.Access.Layer.Migrations
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
-                name: "Candidats");
-
-            migrationBuilder.DropTable(
                 name: "Offres");
 
             migrationBuilder.DropTable(
                 name: "Admins");
-
-            migrationBuilder.DropTable(
-                name: "Identities");
         }
     }
 }
