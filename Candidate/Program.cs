@@ -1,3 +1,5 @@
+using AutoMapper;
+using Business.Services.AutoMapperProfiles;
 using Data.Access.Layer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +17,15 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddIdentity<Admin, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddDefaultTokenProviders();
+
+// Auto Mapper Configurations
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new AutoMapperProfile());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
