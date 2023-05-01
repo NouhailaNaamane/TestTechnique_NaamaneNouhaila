@@ -14,7 +14,16 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"))
 );
 
-builder.Services.AddIdentity<Admin, IdentityRole>()
+//Add ASP.NET core Identity configuration
+builder.Services.AddIdentity<Admin, IdentityRole>((option) => {
+    option.SignIn.RequireConfirmedEmail = false;
+    option.User.RequireUniqueEmail = true;
+    option.Password.RequiredLength = 8;
+    option.Password.RequireUppercase = true;
+    option.Password.RequireLowercase = true;
+    option.Password.RequireDigit = true;
+    option.Password.RequireNonAlphanumeric = true;
+    })
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddDefaultTokenProviders();
 
