@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Candidate.Controllers
+namespace CvThèque.Controllers
 {
     public class HomeController : Controller
     {
