@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Data.Access.Layer.Models;
-using Data.Transfer.Object.AdministrationDTOs;
+using Data.Transfer.Object.Administration;
 
 namespace Business.Services.AutoMapperProfiles
 {
