@@ -1,6 +1,8 @@
 using AutoMapper;
 using Business.Services.AutoMapperProfiles;
+using CvThèque.Extensions;
 using Data.Access.Layer.Models;
+using Data.Transfer.Object.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +29,12 @@ builder.Services.AddIdentity<Admin, IdentityRole>((option) => {
     .AddEntityFrameworkStores<ApplicationContext>()
     .AddDefaultTokenProviders();
 
+// Read app settings configuration from appSettings.json
+builder.Configuration.AddJsonFile("appsettings.json");
+
+// Register the DefaultSuperAdminConfiguration with the configuration system
+builder.Services.Configure<DefaultUserConfiguration>(builder.Configuration.GetSection("DefaultUser"));
+
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>
 {
@@ -36,7 +44,12 @@ var mapperConfig = new MapperConfiguration(mc =>
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
+
+
 var app = builder.Build();
+
+// Set the default user and role
+await app.ConfigureDefaultUserAndRoles();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
