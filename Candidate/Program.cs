@@ -2,6 +2,9 @@ using AutoMapper;
 using Business.Services.AutoMapperProfiles;
 using CvThèque.Extensions;
 using Data.Access.Layer.Models;
+using Data.Access.Layer.Repositories.Admin;
+using Data.Access.Layer.Repositories.Candidature;
+using Data.Access.Layer.Repositories.Offer;
 using Data.Transfer.Object.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +37,11 @@ builder.Configuration.AddJsonFile("appsettings.json");
 
 // Register the DefaultSuperAdminConfiguration with the configuration system
 builder.Services.Configure<DefaultUserConfiguration>(builder.Configuration.GetSection("DefaultUser"));
+
+//Repositories DI
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IOfferRepository, OfferRepository>();
+builder.Services.AddScoped<ICandidatureRepository, CandidatureRepository>();
 
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>
