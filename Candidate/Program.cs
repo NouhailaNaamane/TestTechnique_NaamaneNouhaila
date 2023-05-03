@@ -5,6 +5,7 @@ using Data.Access.Layer.Models;
 using Data.Access.Layer.Repositories.Admin;
 using Data.Access.Layer.Repositories.Candidature;
 using Data.Access.Layer.Repositories.Offer;
+using Data.Access.Layer.UnitOfWorks;
 using Data.Transfer.Object.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,9 @@ builder.Services.Configure<DefaultUserConfiguration>(builder.Configuration.GetSe
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IOfferRepository, OfferRepository>();
 builder.Services.AddScoped<ICandidatureRepository, CandidatureRepository>();
+
+//Unit of works DI
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>
