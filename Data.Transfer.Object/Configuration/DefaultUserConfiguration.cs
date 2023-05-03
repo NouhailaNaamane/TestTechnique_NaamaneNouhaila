@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Transfer.Object.Configuration
 {
-    public class DefaultUserConfiguration
+    public abstract class DefaultUserConfiguration
     {
         public required string SuperAdminEmail { get; set; }
         public required string SuperAdminUserName { get; set; }
