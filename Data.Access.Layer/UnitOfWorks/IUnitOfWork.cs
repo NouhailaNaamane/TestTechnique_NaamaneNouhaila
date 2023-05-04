@@ -13,7 +13,7 @@ namespace Data.Access.Layer.UnitOfWorks
     {
         IAdminRepository AdminRepository { get; init; }
         IOfferRepository OfferRepository { get; init; }
-        ICandidatureRepository CandidatuRepository { get; init; }
+        ICandidatureRepository CandidatureRepository { get; init; }
 
         Task<int> Save();
     }

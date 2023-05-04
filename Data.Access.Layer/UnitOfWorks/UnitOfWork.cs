@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace Data.Access.Layer.UnitOfWorks
 {
-    public abstract class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         public IAdminRepository AdminRepository { get; init; }
         public IOfferRepository OfferRepository { get; init; }
-        public ICandidatureRepository CandidatuRepository { get; init; }
+        public ICandidatureRepository CandidatureRepository { get; init; }
         private readonly ApplicationContext DbContext;
 
-        protected UnitOfWork(IAdminRepository adminRepository, IOfferRepository offerRepository, ICandidatureRepository candidatuRepository, ApplicationContext dbContext)
+        public UnitOfWork(IAdminRepository adminRepository, IOfferRepository offerRepository, ICandidatureRepository candidatureRepository, ApplicationContext dbContext)
         {
             AdminRepository = adminRepository;
             OfferRepository = offerRepository;
-            CandidatuRepository = candidatuRepository;
+            CandidatureRepository = candidatureRepository;
             DbContext = dbContext;
         }
 
