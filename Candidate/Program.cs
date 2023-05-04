@@ -1,14 +1,21 @@
 using AutoMapper;
+using Business.Interfaces.Admin;
+using Business.Interfaces.Identity;
+using Business.Services.Admin;
 using Business.Services.AutoMapperProfiles;
-using CvThÃ¨que.Extensions;
+using Business.Services.Identity;
+using CvThèque.Extensions;
 using Data.Access.Layer.Models;
 using Data.Access.Layer.Repositories.Admin;
 using Data.Access.Layer.Repositories.Candidature;
 using Data.Access.Layer.Repositories.Offer;
 using Data.Access.Layer.UnitOfWorks;
 using Data.Transfer.Object.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +43,23 @@ builder.Services.AddIdentity<Admin, IdentityRole>((option) => {
 // Read app settings configuration from appSettings.json
 builder.Configuration.AddJsonFile("appsettings.json");
 
+//Configure the Authentication and JWT token expiration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        // Set the JWT options
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer"),
+            ValidAudience = builder.Configuration.GetValue<string>("Jwt:Issuer"),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("Jwt:Key")!))
+        };
+    });
+
 // Register the DefaultSuperAdminConfiguration with the configuration system
 builder.Services.Configure<DefaultUserConfiguration>(builder.Configuration.GetSection("DefaultUser"));
 
@@ -46,6 +70,10 @@ builder.Services.AddScoped<ICandidatureRepository, CandidatureRepository>();
 
 //Unit of works DI
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Services DI
+builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>

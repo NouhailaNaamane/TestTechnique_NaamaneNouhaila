@@ -10,6 +10,6 @@ namespace Data.Access.Layer.Repositories.Admin
 {
     public interface IAdminRepository : IGenericRepository<Models.Admin>
     {
-
+        Data.Access.Layer.Models.Admin? GetAdminByLogin(string Login);
     }
 }

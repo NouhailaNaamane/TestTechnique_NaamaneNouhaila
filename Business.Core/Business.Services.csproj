@@ -9,9 +9,12 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Collection" Version="9.0.0" />
+    <PackageReference Include="LinqKit" Version="1.2.4" />
+    <PackageReference Include="LinqKit.Core" Version="1.2.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Business.Interfaces\Business.Interfaces.csproj" />
     <ProjectReference Include="..\Data.Access.Layer\Data.Access.Layer.csproj" />
     <ProjectReference Include="..\Data.Transfer.Object\Data.Transfer.Object.csproj" />
   </ItemGroup>

@@ -12,7 +12,7 @@ namespace Business.Services.AutoMapperProfiles
     public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile() {
-            CreateMap<Admin, AdminDTO>();
+            CreateMap<Data.Access.Layer.Models.Admin, AdminDTO>();
             // TODO: Add mapping for the offer and the candidature
         }
 
