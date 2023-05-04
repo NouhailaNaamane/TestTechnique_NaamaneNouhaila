@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,11 @@ namespace Data.Access.Layer.Repositories.Generic
         public async Task Add(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
+        }
+
+        public async Task<TEntity?> Get(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await _dbContext.Set<TEntity>().Where(predicate).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAll()
