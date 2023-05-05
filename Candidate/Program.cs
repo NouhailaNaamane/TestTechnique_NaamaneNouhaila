@@ -1,6 +1,7 @@
 using AutoMapper;
 using Business.Interfaces.Admin;
 using Business.Interfaces.Identity;
+using Business.Interfaces.TemplateInterface;
 using Business.Services.Admin;
 using Business.Services.AutoMapperProfiles;
 using Business.Services.Identity;
@@ -74,6 +75,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // Services DI
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+
+
+builder.Services.AddScoped<ITemplateService, TemplateService>();
 
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>
