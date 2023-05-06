@@ -1,10 +1,13 @@
 using AutoMapper;
 using Business.Interfaces.Admin;
+using Business.Interfaces.EmailInterfaces;
 using Business.Interfaces.Identity;
 using Business.Interfaces.TemplateInterface;
 using Business.Services.Admin;
 using Business.Services.AutoMapperProfiles;
+using Business.Services.EmailServices;
 using Business.Services.Identity;
+using Business.Services.TemplateService;
 using CvThèque.Extensions;
 using Data.Access.Layer.Models;
 using Data.Access.Layer.Repositories.Admin;
@@ -78,6 +81,7 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 
 
 builder.Services.AddScoped<ITemplateService, TemplateService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 // Auto Mapper Configurations
 var mapperConfig = new MapperConfiguration(mc =>
