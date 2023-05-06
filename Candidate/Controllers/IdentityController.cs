@@ -3,6 +3,7 @@ using Business.Interfaces.Identity;
 using Data.Access.Layer.Models;
 using Data.Access.Layer.UnitOfWorks;
 using Data.Transfer.Object.Administration;
+using Data.Transfer.Object.Identity;
 using Data.Transfer.Object.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +56,25 @@ namespace CvThèque.Controllers
                 ModelState.AddModelError(string.Empty, "Votre identifiant ou mot de passe est incorrect.");
             }
             return View(loginCredentials);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendRenewPassword([FromBody] PasswordForgottenDTO passwordForgotten)
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Dashboard");
+
+            if (ModelState.IsValid)
+            {
+                var isTokenGeneratedAndSent = await this._identityService.PasswordForgotten(passwordForgotten.Email);
+
+                if (!isTokenGeneratedAndSent)
+                    ModelState.AddModelError(string.Empty, "Un erreur est survenue lors de la génération du token ou envoi à votre adresse email, veuillez vérifier plus tard");
+
+                return View();
+            }
+            else
+                return View(passwordForgotten);
         }
 
         private List<Claim> GenerateClaims(AdminDTO admin)
