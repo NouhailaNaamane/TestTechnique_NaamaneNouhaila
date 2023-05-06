@@ -58,6 +58,7 @@ namespace CvThèque.Controllers
             return View(loginCredentials);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> SendRenewPassword([FromBody] PasswordForgottenDTO passwordForgotten)
         {
@@ -69,12 +70,32 @@ namespace CvThèque.Controllers
                 var isTokenGeneratedAndSent = await this._identityService.PasswordForgotten(passwordForgotten.Email);
 
                 if (!isTokenGeneratedAndSent)
-                    ModelState.AddModelError(string.Empty, "Un erreur est survenue lors de la génération du token ou envoi à votre adresse email, veuillez vérifier plus tard");
+                    ModelState.AddModelError(string.Empty, "Une erreur est survenue lors de la génération du token ou envoi à votre adresse email, veuillez vérifier plus tard");
 
                 return View();
             }
             else
                 return View(passwordForgotten);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPassword)
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Dashboard");
+
+            if (ModelState.IsValid)
+            {
+                var isPasswordReseted = await this._identityService.RenewForgottenPassword(resetPassword.Token, resetPassword.Email, resetPassword.NewPassword);
+
+                if (!isPasswordReseted)
+                    ModelState.AddModelError(string.Empty, "Nous n'avons pas pu renouveller votre mot de passe, merci de vérifier vos données.");
+
+                return View();
+            }
+            else
+                return View(resetPassword);
         }
 
         private List<Claim> GenerateClaims(AdminDTO admin)

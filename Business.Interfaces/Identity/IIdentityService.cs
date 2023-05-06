@@ -9,7 +9,8 @@ namespace Business.Interfaces.Identity
 {
     public interface IIdentityService
     {
-        Task<bool> CanLogIn(string Email, string Password, bool RememberMe = false); 
+        Task<bool> CanLogIn(string Email, string Password, bool RememberMe = false);
         Task<bool> PasswordForgotten(string Email);
+        Task<bool> RenewForgottenPassword(string Token, string Email, string NewPassword);
     }
 }

@@ -70,5 +70,34 @@ namespace Business.Services.Identity
                 );
         }
 
+        public async Task<bool> RenewForgottenPassword(string Token, string Email, string NewPassword)
+        {
+            var dbAdmin = await _unitOfWork.AdminRepository.Get(A => !string.IsNullOrEmpty(A.Email) && A.Email.ToUpper() == Email.ToUpper());
+
+            if (dbAdmin == null)
+                throw new Exception("Cet email n'est affecté à aucun compte.");
+
+            var identityResult = await _userManager.ResetPasswordAsync(dbAdmin, Token, NewPassword);
+
+            //Notify the user about the update
+            if(identityResult.Succeeded)
+            {
+                Dictionary<TEMPLATE_KEYS, string> emailVariableValues = new Dictionary<TEMPLATE_KEYS, string>()
+                {
+                    { TEMPLATE_KEYS.USER_FIRSTNAME, dbAdmin.Prenom },
+                    { TEMPLATE_KEYS.USER_LASTNAME, dbAdmin.Nom },
+                };
+
+                return await _emailSender.SendMail<TemplateResources>(
+                    To: new string[] { Email },
+                    Subject: "Mot de passe changé",
+                    EmailTemplate: TemplateResources.PasswordResetSucceed,
+                    TemplateVariablesValues: emailVariableValues
+                    );
+            }
+
+            return identityResult.Succeeded;
+
+        }
     }
 }

@@ -128,4 +128,18 @@ Cordialement,
 &lt;br/&gt; 
 {{ APP_NAME }}</value>
   </data>
+  <data name="PasswordResetSucceed" xml:space="preserve">
+    <value>Bonjour MR/Mme &lt;b&gt;{{ USER_LASTNAME }} {{ USER_FIRSTNAME }}&lt;/b&gt;, 
+&lt;br/&gt; 
+&lt;br/&gt; 
+Votre mot de passe a été mis à jour avec succès. Vous pouvez vous reconnecter avec votre login et nouveau mot de passe.
+&lt;br/&gt; 
+&lt;br/&gt; 
+Si vous n'êtes pas sûr que vous avez effectué cette opération, merci de contacter le support. 
+&lt;br/&gt; 
+&lt;br/&gt; 
+Cordialement, 
+&lt;br/&gt; 
+{{ APP_NAME }}</value>
+  </data>
 </root>

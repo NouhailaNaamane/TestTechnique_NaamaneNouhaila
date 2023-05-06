@@ -76,5 +76,25 @@ namespace Business.Services.Resources {
                 return ResourceManager.GetString("PasswordForgottenTemplate", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bonjour MR/Mme &lt;b&gt;{{ USER_LASTNAME }} {{ USER_FIRSTNAME }}&lt;/b&gt;, 
+        ///&lt;br/&gt; 
+        ///&lt;br/&gt; 
+        ///Votre mot de passe a été mis à jour avec succès. Vous pouvez vous reconnecter avec votre login et nouveau mot de passe.
+        ///&lt;br/&gt; 
+        ///&lt;br/&gt; 
+        ///Si vous n&apos;êtes pas sûr que vous avez effectué cette opération, merci de contacter le support. 
+        ///&lt;br/&gt; 
+        ///&lt;br/&gt; 
+        ///Cordialement, 
+        ///&lt;br/&gt; 
+        ///{{ APP_NAME }}.
+        /// </summary>
+        internal static string PasswordResetSucceed {
+            get {
+                return ResourceManager.GetString("PasswordResetSucceed", resourceCulture);
+            }
+        }
     }
 }
