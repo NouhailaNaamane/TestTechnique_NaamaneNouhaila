@@ -99,5 +99,17 @@ namespace Business.Services.Identity
             return identityResult.Succeeded;
 
         }
+
+        public async Task<bool> UpdatePassword(string IdentityID, string OldPassword, string NewPassword)
+        {
+            var user = await _userManager.FindByIdAsync(IdentityID);
+
+            if (user == null)
+                throw new Exception("Aucun utilisateur trouvé");
+
+            var identityResult = await _userManager.ChangePasswordAsync(user, OldPassword, NewPassword);
+
+            return identityResult.Succeeded;
+        }
     }
 }

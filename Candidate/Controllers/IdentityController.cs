@@ -1,5 +1,6 @@
 ﻿using Business.Interfaces.Admin;
 using Business.Interfaces.Identity;
+using CvThèque.Extensions;
 using Data.Access.Layer.Models;
 using Data.Access.Layer.UnitOfWorks;
 using Data.Transfer.Object.Administration;
@@ -98,12 +99,30 @@ namespace CvThèque.Controllers
                 return View(resetPassword);
         }
 
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePassword)
+        {
+            if (ModelState.IsValid)
+            {
+                var isPasswordReseted = await this._identityService.UpdatePassword(this.GetIdAdmin(), changePassword.OldPassword, changePassword.NewPassword);
+
+                if (!isPasswordReseted)
+                    ModelState.AddModelError(string.Empty, "Nous n'avons pas pu changer votre mot de passe, merci de vérifier vos données.");
+
+                return View();
+            }
+            else
+                return View(changePassword);
+        }
+
         private List<Claim> GenerateClaims(AdminDTO admin)
         {
             // Create the claims for the user
             return new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, admin.Id),
+                new Claim(JwtRegisteredClaimNames.Iss, admin.IdAdmin.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, admin.Email ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
