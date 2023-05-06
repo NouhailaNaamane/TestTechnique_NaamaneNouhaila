@@ -64,7 +64,7 @@ namespace Business.Services.Resources {
         ///   Looks up a localized string similar to Bonjour MR/Mme &lt;b&gt;{{ USER_LASTNAME }} {{ USER_FIRSTNAME }}&lt;/b&gt;, 
         ///&lt;br/&gt; 
         ///&lt;br/&gt; 
-        ///Vous avez demandé la réinitialisation de votre mot de passe CvThèque, veuillez cliquer sur ce &lt;a href=&quot;{{ DOMAIN_NAME }}/password-reset?token={{ TOKEN }}&quot;&gt;&lt;b&gt;lien&lt;/b&gt;&lt;/a&gt; pour pouvoir chosir un nouveau mot de passe. 
+        ///Vous avez demandé la réinitialisation de votre mot de passe CvThèque, veuillez cliquer sur ce &lt;a href=&quot;{{ DOMAIN_NAME }}/password-reset?email={{ USER_EMAIL }}&amp;token={{ TOKEN }}&quot;&gt;&lt;b&gt;lien&lt;/b&gt;&lt;/a&gt; pour pouvoir chosir un nouveau mot de passe. 
         ///&lt;br/&gt; 
         ///&lt;br/&gt; 
         ///Cordialement, 

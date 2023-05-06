@@ -17,7 +17,8 @@ namespace Business.Interfaces.EmailInterfaces
     {
         TOKEN,
         USER_LASTNAME,
-        USER_FIRSTNAME
+        USER_FIRSTNAME,
+        USER_EMAIL
     }
 
 }

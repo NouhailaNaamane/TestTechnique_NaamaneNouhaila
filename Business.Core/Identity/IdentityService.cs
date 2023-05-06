@@ -58,7 +58,8 @@ namespace Business.Services.Identity
             {
                 { TEMPLATE_KEYS.TOKEN, token },
                 { TEMPLATE_KEYS.USER_FIRSTNAME, dbAdmin.Prenom },
-                { TEMPLATE_KEYS.USER_LASTNAME, dbAdmin.Nom }
+                { TEMPLATE_KEYS.USER_LASTNAME, dbAdmin.Nom },
+                { TEMPLATE_KEYS.USER_EMAIL, dbAdmin.Email }
             };
 
             return await _emailSender.SendMail<TemplateResources>(
