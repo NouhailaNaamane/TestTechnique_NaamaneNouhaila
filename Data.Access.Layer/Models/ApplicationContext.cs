@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data.Access.Layer.Models
 {
-    public class ApplicationContext : IdentityDbContext<Admin>
+    public class ApplicationContext : IdentityDbContext<Admin, IdentityRole<Guid>, Guid>
     {
         public DbSet<Offre> Offres { get; set; }
         public DbSet<Admin> Admins { get; set; }
@@ -22,11 +22,11 @@ namespace Data.Access.Layer.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<IdentityUserClaim<string>>().HasKey(p => p.Id);
-            modelBuilder.Entity<IdentityUserRole<string>>().HasKey(p => new { p.UserId, p.RoleId });
-            modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(p => p.UserId);
-            modelBuilder.Entity<IdentityUserToken<string>>().HasKey(p => p.UserId);
-            modelBuilder.Ignore<IdentityUser<string>>();
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().HasKey(p => p.Id);
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasKey(p => new { p.UserId, p.RoleId });
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().HasKey(p => p.UserId);
+            modelBuilder.Entity<IdentityUserToken<Guid>>().HasKey(p => p.UserId);
+            modelBuilder.Ignore<IdentityUser<Guid>>();
 
             modelBuilder.Entity<Admin>(entity =>
             {

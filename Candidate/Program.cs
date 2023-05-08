@@ -32,7 +32,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 );
 
 //Add ASP.NET core Identity configuration
-builder.Services.AddIdentity<Admin, IdentityRole>((option) => {
+builder.Services.AddIdentity<Admin, IdentityRole<Guid>>((option) => {
     option.SignIn.RequireConfirmedEmail = false;
     option.User.RequireUniqueEmail = true;
     option.Password.RequiredLength = 8;

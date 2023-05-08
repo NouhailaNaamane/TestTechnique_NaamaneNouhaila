@@ -6,9 +6,9 @@ namespace CvThèque.Extensions
 {
     public static class ControllerExtensions
     {
-        public static string GetIdAdmin(this ControllerBase controllerBase)
+        public static Guid GetIdAdmin(this ControllerBase controllerBase)
         {
-            return controllerBase.User.Claims.First(C => C.Type == ClaimTypes.NameIdentifier).Value;
+            return Guid.Parse(controllerBase.User.Claims.First(C => C.Type == ClaimTypes.NameIdentifier).Value);
         }
     }
 }

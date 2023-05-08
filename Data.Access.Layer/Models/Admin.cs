@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Access.Layer.Models
 {
-    public class Admin : IdentityUser
+    public class Admin : IdentityUser<Guid>
     {
         public Guid IdAdmin { get; set; }
         public bool IsSuperAdmin { get; set; } = false;

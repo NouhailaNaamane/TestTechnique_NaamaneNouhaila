@@ -29,14 +29,14 @@ namespace CvThèque.Extensions
 
         private static async Task CreateDefaultRoles(IServiceScope serviceScope)
         {
-            var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+            var roleManager = serviceScope.ServiceProvider.GetService<RoleManager<IdentityRole<Guid>>>();
 
             if (roleManager == null)
                 throw new Exception("Role Manager not registred");
 
             foreach (var role in Enum.GetNames(typeof(ROLES)))
                 if (await roleManager.RoleExistsAsync(role) == false)
-                    await roleManager.CreateAsync(new IdentityRole()
+                    await roleManager.CreateAsync(new IdentityRole<Guid>()
                     {
                         Name = role
                     });
@@ -69,7 +69,8 @@ namespace CvThèque.Extensions
                     IsSuperAdmin = true,
                     Nom = DefaultSuperAdminConfiguration.SuperAdminUserName,
                     Prenom = DefaultSuperAdminConfiguration.SuperAdminUserName,
-                    UserName = DefaultSuperAdminConfiguration.SuperAdminUserName
+                    UserName = DefaultSuperAdminConfiguration.SuperAdminUserName,
+                    Id = Guid.NewGuid()
                 });
 
                 if (!identityResult.Succeeded)
