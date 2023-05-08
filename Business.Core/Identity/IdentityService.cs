@@ -100,9 +100,9 @@ namespace Business.Services.Identity
 
         }
 
-        public async Task<bool> UpdatePassword(string IdentityID, string OldPassword, string NewPassword)
+        public async Task<bool> UpdatePassword(Guid IdentityID, string OldPassword, string NewPassword)
         {
-            var user = await _userManager.FindByIdAsync(IdentityID);
+            var user = _userManager.Users.FirstOrDefault(U => U.Id == IdentityID);
 
             if (user == null)
                 throw new Exception("Aucun utilisateur trouvé");

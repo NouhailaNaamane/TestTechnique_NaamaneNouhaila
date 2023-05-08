@@ -12,6 +12,6 @@ namespace Business.Interfaces.Identity
         Task<bool> CanLogIn(string Email, string Password, bool RememberMe = false);
         Task<bool> PasswordForgotten(string Email);
         Task<bool> RenewForgottenPassword(string Token, string Email, string NewPassword);
-        Task<bool> UpdatePassword(string IdentityID, string OldPassword, string NewPassword); 
+        Task<bool> UpdatePassword(Guid IdentityID, string OldPassword, string NewPassword); 
     }
 }

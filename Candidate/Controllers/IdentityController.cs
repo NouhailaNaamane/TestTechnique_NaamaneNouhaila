@@ -100,7 +100,7 @@ namespace CvThèque.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpPatch]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePassword)
         {
             if (ModelState.IsValid)
@@ -121,7 +121,7 @@ namespace CvThèque.Controllers
             // Create the claims for the user
             return new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, admin.Id),
+                new Claim(JwtRegisteredClaimNames.Sub, admin.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iss, admin.IdAdmin.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, admin.Email ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
